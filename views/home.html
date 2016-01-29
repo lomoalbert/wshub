@@ -6,7 +6,7 @@
 </head>
 <body>
 <script>
-    var  wsServer = 'ws://localhost:12345/ws';
+    var  wsServer = 'ws://'+window.location.host+'/ws';
     var  websocket = new WebSocket(wsServer);
     websocket.onopen = function (evt) { onOpen(evt) };
     websocket.onclose = function (evt) { onClose(evt) };

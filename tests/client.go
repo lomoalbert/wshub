@@ -2,32 +2,24 @@ package main
 
 import (
 	"golang.org/x/net/websocket"
-	"fmt"
 	"log"
 	"time"
+	"fmt"
 )
 
-
-func main() {
-	origin := "http://localhost/"
-	url := "ws://localhost:8080/ws"
-	ws, err := websocket.Dial(url, "", origin)
+func connect() {
+	origin := "http://127.0.0.1/"
+	url := "ws://127.0.0.1:8080/ws"
+	_, err := websocket.Dial(url, "", origin)
 	if err != nil {
 		log.Fatal(err)
 	}
-	for i:=0;i<10;i++{
-		if _, err := ws.Write([]byte("hello, world!\n")); err != nil {
-			log.Fatal(err)
-		}
-		var msg = make([]byte, 512)
-		var n int
-		if n, err = ws.Read(msg); err != nil {
-			log.Fatal(err)
-		}
-		fmt.Printf("Received: %s.\n", msg[:n])
-		time.Sleep(time.Second*2)
-	}
-	ws.Close()
 }
 
-
+func main() {
+	for i := 0; i < 100000; i++ {
+		go connect()
+		fmt.Println(i)
+	}
+	time.Sleep(time.Second * 100)
+}
