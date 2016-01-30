@@ -8,5 +8,5 @@ import (
 
 func init() {
     beego.Router("/", &controllers.MainController{})
-	beego.Handler("/ws",websocket.Handler(controllers.EchoServer))
+	beego.Handler("/ws",websocket.Handler(controllers.GroupChatServer))
 }
