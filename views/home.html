@@ -1,32 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="red">
     <title></title>
+    <script type='text/javascript' charset='utf-8' src='/static/js/jquery-1.11.1.min.js'></script>
+    <script>
+        var wsServer = 'ws://' + window.location.host + '/ws';
+        var websocket = new WebSocket(wsServer);
+        websocket.onopen = function (evt) {
+            onOpen(evt)
+        };
+        websocket.onclose = function (evt) {
+            onClose(evt)
+        };
+        websocket.onmessage = function (evt) {
+            onMessage(evt)
+        };
+        websocket.onerror = function (evt) {
+            onError(evt)
+        };
+        function onOpen(evt) {
+            console.log("Connected to WebSocket server.");
+        }
+        function onClose(evt) {
+            console.log("Disconnected");
+            window.location.reload();
+        }
+        function onMessage(evt) {
+            console.log('Retrieved data from server: ' + evt.data);
+            var li = document.createElement("li");
+            var text = document.createTextNode(evt.data);
+            var history = document.getElementById("history");
+            li.appendChild(text);
+            history.appendChild(li);
+        }
+        function onError(evt) {
+            console.log('Error occured: ' + evt.data);
+            window.location.reload();
+        }
+        function Submit() {
+            websocket.send($('#message').val());
+            $('#message').val('');
+        }
+    </script>
 </head>
 <body>
-<div >
-
+<div style="width: 100%;min-height: 5rem; ">
+    <ul id="history">
+    </ul>
 </div>
+<input id="message" type="text" style="width: 80%;height:1.5rem;float: left;" autofocus>
+<button onclick="Submit();" style="width: 15%;float: right;height:1.5rem;">提交</button>
 <script>
-    var  wsServer = 'ws://'+window.location.host+'/ws';
-    var  websocket = new WebSocket(wsServer);
-    websocket.onopen = function (evt) { onOpen(evt) };
-    websocket.onclose = function (evt) { onClose(evt) };
-    websocket.onmessage = function (evt) { onMessage(evt) };
-    websocket.onerror = function (evt) { onError(evt) };
-    function onOpen(evt) {
-        console.log("Connected to WebSocket server.");
-    }
-    function onClose(evt) {
-        console.log("Disconnected");
-    }
-    function onMessage(evt) {
-        console.log('Retrieved data from server: ' + evt.data);
-    }
-    function onError(evt) {
-        console.log('Error occured: ' + evt.data);
-    }
+    $("#message").keypress(function (e) {
+        if (e.which == 13) {
+            Submit();
+        }
+    });
 </script>
 </body>
 </html>
