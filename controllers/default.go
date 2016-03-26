@@ -9,5 +9,13 @@ type MainController struct {
 }
 
 func (c *MainController) Get() {
-	c.TplNames = "home.html"
+	c.TplName = "home.html"
+}
+
+type VideoController struct {
+	beego.Controller
+}
+
+func (c *VideoController) Get() {
+	c.TplName = "video.html"
 }

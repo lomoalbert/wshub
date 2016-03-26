@@ -7,6 +7,7 @@ import (
 )
 
 func init() {
-    beego.Router("/", &controllers.MainController{})
-	beego.Handler("/ws",websocket.Handler(controllers.GroupChatServer))
+	beego.Router("/", &controllers.MainController{})
+	beego.Handler("/ws", websocket.Handler(controllers.GroupChatServer))
+	beego.Router("/video/", &controllers.VideoController{})
 }
