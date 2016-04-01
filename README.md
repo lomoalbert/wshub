@@ -1,2 +1,2 @@
 # wshub
-golang实现的websockt框架
+golang的beego框架实现的websockt实例
